@@ -8,10 +8,8 @@ def log_event(cpu, data, size):
     src_address = inet_ntop(AF_INET, pack('I', event.saddr))
     dest_address = inet_ntop(AF_INET, pack('I', event.daddr)) 
 
-    print(f'Source: {src_address}; Destination: {dest_address}; Protocol: {event.protocol}')
-
     if args.program_type == "ip_rcv":
-        print(f'Source: {src_address}; Destination: {dest_address}; Protocol: {event.protocol}; Dropped: {event.nf_drooped}.')
+        print(f'Source: {src_address}; Destination: {dest_address}; Protocol: {event.protocol}; Dropped: {event.nf_dropped}.')
     else:
         print(f'Source: {src_address}; Destination: {dest_address}; Protocol: {event.protocol}.')
 

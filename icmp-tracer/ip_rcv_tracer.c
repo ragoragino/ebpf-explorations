@@ -7,7 +7,7 @@ struct trace_event_data {
     u32 saddr;
     u32 daddr;
     u8 protocol;
-	u8 nf_drooped;
+	u8 nf_dropped;
 };
 
 static inline struct iphdr *skb_to_iphdr(const struct sk_buff *skb)
@@ -50,7 +50,7 @@ int ip_rcv_exit(struct pt_regs *ctx) {
         data.saddr = iph->saddr;
         data.daddr = iph->daddr;
         data.protocol = iph->protocol;
-		data.nf_drooped = ret == -EPERM;
+		data.nf_dropped = ret == -EPERM;
 
         events.perf_submit(ctx, &data, sizeof(data));
     }

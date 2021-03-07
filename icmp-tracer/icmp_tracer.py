@@ -1,5 +1,5 @@
 from bcc import BPF
-from socket import inet_ntop, ntohs, AF_INET
+from socket import inet_ntop, AF_INET
 from struct import pack
 
 def log_event(cpu, data, size):

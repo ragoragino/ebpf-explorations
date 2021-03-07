@@ -1,4 +1,3 @@
-#include <uapi/linux/ptrace.h>
 #include <uapi/linux/ip.h>
 #include <net/sock.h>
 #include <bcc/proto.h>

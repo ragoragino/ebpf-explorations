@@ -17,10 +17,10 @@ static inline struct iphdr *skb_to_iphdr(const struct sk_buff *skb)
 BPF_PERF_OUTPUT(events);
 
 int ip_rcv_core_exit(struct pt_regs *ctx) {
-	const struct sk_buff *skb = (struct sk_buff *)PT_REGS_RC(ctx);
-	if (skb == 0) {
-		return 0;	// ip_rcv_core failed
-	}
+    const struct sk_buff *skb = (struct sk_buff *)PT_REGS_RC(ctx);
+    if (skb == 0) {
+        return 0;	// ip_rcv_core failed
+    }
 
     const struct iphdr *iph = skb_to_iphdr(skb);
 
@@ -33,5 +33,5 @@ int ip_rcv_core_exit(struct pt_regs *ctx) {
         events.perf_submit(ctx, &data, sizeof(data));
     }  
 
-	return 0;
+    return 0;
 }

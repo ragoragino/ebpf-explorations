@@ -19,8 +19,8 @@ class CommonEvent(ct.Structure):
 
 class L2Event(ct.Structure):
     _fields_ = [("dev_name", ct.c_char * IFNAMSIZ),
-                ("mac_dest", ct.c_char * ETH_ALEN),
-                ("mac_src", ct.c_char * ETH_ALEN)]
+                ("mac_dest", ct.c_ubyte * ETH_ALEN),
+                ("mac_src", ct.c_ubyte * ETH_ALEN)]
 
 class L3Event(ct.Structure):
     _fields_ = [("saddr", ct.c_uint32),

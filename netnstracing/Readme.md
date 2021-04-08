@@ -54,10 +54,13 @@ default via 172.17.0.1 dev eth0
 
 As we can see, container was assigned an eth0 interface with an IPv4 address of 172.17.0.2 belonging to the Docker-reserved subnet and has a default gateway at 172.17.0.1 (that can be accessed via eth0 interface) which is the IP address of the docker0 bridge. It also knows that it can access any address inside the subnet 172.17.0.0/16 (which will host all Docker containers) directly on an L2 (virtual) segment.
 
-We can also see the other end of the veth pair in the default namespace:
+We can also see the other end of the veth pair in the default namespace (we can notice that its master interface is docker0):
 
 ```console
-TODO
+20: veth47472ba@if19: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master docker0 state UP group default 
+    link/ether c6:9a:a9:9e:1b:53 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet6 fe80::c49a:a9ff:fe9e:1b53/64 scope link 
+       valid_lft forever preferred_lft forever
 ```
 
 A similar summary can be also obtained with native Docker commands:

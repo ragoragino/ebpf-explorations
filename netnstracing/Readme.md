@@ -54,6 +54,12 @@ default via 172.17.0.1 dev eth0
 
 As we can see, container was assigned an eth0 interface with an IPv4 address of 172.17.0.2 belonging to the Docker-reserved subnet and has a default gateway at 172.17.0.1 (that can be accessed via eth0 interface) which is the IP address of the docker0 bridge. It also knows that it can access any address inside the subnet 172.17.0.0/16 (which will host all Docker containers) directly on an L2 (virtual) segment.
 
+We can also see the other end of the veth pair in the default namespace:
+
+```console
+TODO
+```
+
 A similar summary can be also obtained with native Docker commands:
 
 ```console
@@ -105,7 +111,7 @@ $ docker network inspect bridge
 ]
 ```
 
-Even though we see how a communication between containers and from containers to default network namespace (via docker0 bridge) is achieved, how a communication of containers with outside world is established? This is where iptables come into play. Docker by default establishes several iptables rules, in the nat and filter tables. For outbound traffic, there needs to be firstly a rule that will allow forwarding the traffic from the docker0 bridge to the outside world. This is specified in the filter table and forward chain (rule 5):
+Even though we see how a communication between containers and from containers to default network namespace (via docker0 bridge) is achieved, how a communication of containers with outside world is established? This is where iptables come into play. Docker by default establishes several iptables rules, in the nat and filter tables. For outbound traffic, there needs to be firstly a rule that will allow forwarding the traffic from the docker0 bridge to the outside world. This is specified in the filter table and forward chain. In my case, we can see it as a rule 5 that accepts all traffic that arrives from the docker0 interface and is destined for all interfaces but docker0 (we can even see some packets being accepted in that chain):
 
 
 ```console
@@ -149,7 +155,7 @@ num   pkts bytes target     prot opt in     out     source               destina
 
 For the inbound traffic Docker will need to setup a rule to allow all traffic on which the container is waiting for. This is achieved with another ACCEPT target with a specified connection state matching rule (rule 3 in the FORWARD chain of the filter table in the iptables output above).
 
-[TODO: Create a picture of how the veth pair + bridge looks like]
+![Container Network](/assets/images/ebpf/netnstracing/container_network.png)
 
 These changes in the iptables rules should allow the traffic to flow from the container to the world and back.[^nat] Allowing new traffic to the container can be also done, however, for the reasons of simplicity I won't pursue that here. So let's summarize the path of an inbound and outbound traffic from a container to some outside server: 
 
